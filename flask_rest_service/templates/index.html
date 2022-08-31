@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+  <h4><B>Database statistics:</B></h4>
+  <h5>
+    A total of {{ total_count }} entries, including 300+ Fe-based <i>rare-earth-free</i> magnets discovered through our <a href="/about#AGA">adaptive genetic algorithm</a> (AGA) searches, are registered in our database. Data statistics are summarized <a href="/stats">here</a>.
+  </h5>
+  <h4><B>Phase diagrams:</B></h4>
+  <h5>
+    Binary phases: {%for data in pd_data.binary %} <a href="/diagram#{{ data.system }}">{{ data.system }}</a> ({{ data.counts }}), {%endfor %} among others.
+  </h5>
+  <h5>
+    Ternary phases: {%for data in pd_data.ternary %} <a href="/diagram#{{ data.system }}">{{ data.system }}</a> ({{ data.counts }}), {%endfor %} among others.
+  </h5>
+  <h4><B>Benchmark test:</B></h4>
+  <h5>
+     Benchmark results are summarized <a href="/benchmark">here</a>, where we compare theoretical and experimental values.
+  </h5>
+</div>
+
+{%if not message %}
+
+<div class="container text-center">
+    <div class="clearfix" style="margin-bottom: 20px;"></div>
+    <div class="col">    
+        <form action="/query" method="get" name="query" role="form" class="form-inline">
+             <div class="form-group">
+                 <select name="select_type" class="selectpicker" data-style="btn-primary"> 
+                     <option value="element">Elements</option> 
+                     <option value="formula">Formula</option> 
+                     <option value="groupid">Space Group No.</option> 
+                     <option value="materialid">Material ID</option> 
+                 </select> 
+             </div>
+             <div class="form-group">
+                  <label> </label>
+                  <input type="text" name="in_string" placeholder=" Fe Co N" size="20">
+             </div>
+             <div class="form-group">
+                  <input type="submit" name="submit" value="Search">
+             </div>
+	     {%if random_selection %}
+             <div>
+               <span>random selection: <a href="/query?select_type=element&in_string={{ random_selection.link }}">{{ random_selection.system }}</a> ({{ random_selection.counts }} found)</span>
+             </div>
+	     {% endif %}
+        </form>
+    </div>
+</div>
+
+
+{%if num %}
+<div class="container-fluid">
+<div class="row row-centered">
+  <span> Displaying {{ num.showing }} out of {{ num.total_found }}. </span>
+  <table class="table table-condensed table-hover table-responsive table-bordered col-md-12">
+    <thead>
+      <tr class="active d-flex">
+        <th></th>
+        <th colspan="5">Crystallographic data</th>
+        <th colspan="3">Sstructural stability [<a href="#footnotes-hull">Footnotes</a>]</th>
+        <th colspan="8">Magnetic properties [<a href="#footnotes-mag">Footnotes</a>, <a href="http://www.ieeemagnetics.org/images/stories/magnetic_units.pdf">magnetic units</a>]</th>
+        <th colspan="1">Methods</th>
+        <th colspan="1">References</th>
+      </tr>
+    </thead>
+    <thead>
+      <tr class="active d-flex">
+        <th>Materials&nbsp;ID</th>
+        <!-- Crystallographic data -->
+        <th class="col-md-1">Formula</th>
+        <th>Formula&nbsp;units per&nbsp;cell</th>
+        <th>Atomic&nbsp;sites per&nbsp;cell</th>
+        <th>Crystal&nbsp;system</th>
+        <th class="col-md-2">Space group [Number]</th>
+        <!-- Stability -->
+        <th>Formation energy (eV/atom) </th>
+        <th class="col-md-2">Energy&nbsp;relative&nbsp;to convex&nbsp;hull (eV/atom) </th>
+        <th>Structure&nbsp;search</th>
+        <!-- Magnetic properties -->
+        <th class="col-md-1">Averaged magnetic&nbsp;moment (&mu;<sub>B</sub>/atom)</th>
+        <th class="col-md-1">Magnetic polarization, J<sub>s</sub>&nbsp;(T) <!--[J (emu/cm<sup>3</sup>)]--></th>
+        <th>Magnetic easy&nbsp;axis</th>
+        <th colspan="4" class="col-md-3">Magnetic&nbsp;anisotropy&nbsp;constants:<br>K<sup>a-c</sup>, K<sup>b-c</sup>, K<sup>b-a</sup>, K<sup>d-a</sup> (MJ/m<sup>3</sup>)</th>
+        <th>Curie temperature, T<sub>C</sub>&nbsp;(K)</th>
+        <!-- Methods -->
+        <th>Methods</th>
+        <!-- References -->
+        <th class="col-md-1">References</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in data %}
+      <tr>
+        <td><a href="/info/{{ d.mmid }}">{{ d.mmid }}</a></td>
+        <!-- Crystallographic data -->
+        <td><a href="/query?select_type=reduced_formula&in_string={{ d.formula.reduced }}">{{ d.formula.html | safe }}</a></td>
+        <td align="center">{{ d.formula.unit }}</td>
+        <td align="center">{{ d.num_sites }}</td>
+        <td>{{ d.crystal_system }}</td>
+        <td>{{ d.symbol }}&nbsp;[<a href="/query?select_type=groupid&in_string={{ d.number }}">{{ d.number }}</a>]</td>
+        <!-- Stability -->
+        <td align="center"><a href="/info/{{ d.mmid }}#Phase-diagram">{{ d.decomposition }}</a></td>
+        <td align="center">{{ d.above_hull }}</td>
+	{%if d.synthesis.url %}
+        <td align="center"><a href="{{ d.synthesis.url }}">{{ d.synthesis.val }}</a></td>
+	{% else %}
+        <td align="center">{{ d.synthesis.val }}</td>
+	{% endif %}
+        <!-- Magnetic properties -->
+        <td align="center">{{ d.magmom.ave }}</td>
+        <td align="center">{{ d.magpol.SI }} <!-- [{{ d.magpol.cgs }}] --></td>
+        <td align="center"><a href="/query?select_type=easy_axis&in_string={{ d.easy_axis }}">{{ d.easy_axis }}</a></td>
+        <td align="center">{{ d.MAC_ac }}</td>
+        <td align="center">{{ d.MAC_bc }}</td>
+        <td align="center">{{ d.MAC_ba }}</td>
+        <td align="center">{{ d.MAC_da }}</td>
+        <td align="center">{{ d.Curie_T }}</td>
+        <td align="center">{{ d.method }}</td>
+        <!-- References -->
+        <td><a href="{{ d.url }}">{{ d.lnk }}</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+<hr>
+
+<div>
+  <B>Footnotes:</B>
+  <ol>
+    <li id="footnotes-hull">
+      <B>Formation energy:</B><br>
+      We perform <a href="/about#DFT">DFT calculations</a> to calculate the total enegies of all the structures. The formation energy is computed with respect to a linear combination of the total energies of reference elemental phases. When the formation energies are plotted as a function of chemical composition, a set of stable compounds forms a <i>convex hull</i>, which represents a boundary (theoretical lower limit) in a compositional phase diagram. Metastable compounds lie above the hull, and the energy relative to the hull (<i>distance</i> to the hull) is a useful quantity to examine the metastability of a new compound. The lower the formation energy above the convex hull, the more likely it is for the material to exist.
+    </li>
+    <li id="footnotes-mag">
+      <B>Magnetic anisotropy constants:</B><br>
+      Magnetic anisotropy constant, K<sup>a-c</sup>, is defined as K<sup>a-c</sup> = E<sub>a</sub>-E<sub>c</sub>, where E<sub>a</sub> and E<sub>c</sub> are the total energies per volume for the magnetization oriented along the crystallographic a and c axes, respectively. Similarly, K<sup>b-c</sup> and K<sup>b-a</sup> are defined as K<sup>b-c</sup> = E<sub>b</sub>-E<sub>c</sub> and K<sup>b-a</sup> = E<sub>b</sub>-E<sub>a</sub>, respectively. For cubic crystal systems, magnetic anisotropy constant is calculated as K<sup>d-a</sup> = E<sub>d</sub>-E<sub>a</sub>, where E<sub>d</sub> is the total energy per volume for the magnetization oriented along the body-diagonal direction of the unit cell.
+    </li>
+  </ol>
+</div>
+
+{% else %}
+<div class="container-fluid">
+<div class="row row-centered">
+  <span> No entries found. </span>
+</div>
+</div>
+
+<!--
+<div class="container text-center">
+  <i>Data are temporarily not available while we perform maintenance.</i>
+</div>
+-->
+{% endif %}
+
+<hr>
+
+<div>
+  <b>Collaborative PIs:</b>
+  <ul>
+    <li>James R. Chelikowsky (<a href="https://www.utexas.edu/">University of Texas at Austin</a>)</li>
+    <li>Kai-Ming Ho and Cai-Zhuang Wang (<a href="https://www.iastate.edu/">Iowa State University</a>)</li>
+    <li>David Sellmyer and XiaoShan Xu (<a href="https://www.unl.edu/">University of Nebraska–Lincoln</a>)</li>
+  </ul>
+</div>
+
+{% else %}
+
+<div class="clearfix" style="margin-bottom: 20px;"></div>
+<p>{{ message }}</p>
+
+{% endif %}
+
+{% endblock %}

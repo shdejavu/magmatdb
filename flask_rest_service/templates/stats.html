@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3>Database statistics for a total of {{ total_count }} entries</h3>
+</div>
+
+<div class="container">
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <h4><span class="label label-primary">
+		  Crystal systems:
+              </span></h4>
+         </div>
+     </div>
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <div class="center">
+		<img src="/stats/crystal_systems.png" width="100%" alt="crystal_systems">
+              </div>
+         </div>
+         <div class="col-md-5 col-sm-3">
+              <table class="table table-bordered table-condensed">
+		<thead>
+		  <tr class="active d-flex">
+		    <th>Crystal system</th>
+		    <th class="col-md-3">Entries</th>
+		    <th class="col-md-3">Percentage</th>
+		  </tr>
+		</thead>
+                <tbody>
+		  {% for data in stats_data.crystal_systems %}
+                  <tr>
+                    <td><h4> {{ data.system }} </h4></td>
+                    <td align="right"><h4> {{ data.counts }} </h4></td>
+                    <td align="right"><h4> {{ data.percent }} </h4></td>
+                  </tr>
+		  {% endfor %}
+                </tbody>
+              </table>
+         </div>
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <h4><span class="label label-primary">
+		  Compositions:
+              </span></h4>
+         </div>
+     </div>
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <div class="center">
+		<img src="/stats/compositions.png" width="100%" alt="compositions">
+              </div>
+         </div>
+         <div class="col-md-5 col-sm-3">
+              <table class="table table-bordered table-condensed">
+		<thead>
+		  <tr class="active d-flex">
+		    <th>System</th>
+		    <th class="col-md-3">Types</th>
+		    <th class="col-md-3">Entries</th>
+		  </tr>
+		</thead>
+                <tbody>
+		  {% for data in stats_data.compositions %}
+                  <tr>
+                    <td><h4> {{ data.system }} </h4></td>
+                    <td align="right"><h4> {{ data.types }} </h4></td>
+                    <td align="right"><h4> {{ data.total }} </h4></td>
+                  </tr>
+		  {% endfor %}
+                </tbody>
+              </table>
+         </div>
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <h4><span class="label label-primary">
+		  Compounds:
+              </span></h4>
+         </div>
+     </div>
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <div class="center">
+		<img src="/stats/compounds.png" width="100%" alt="compounds">
+              </div>
+         </div>
+         <div class="col-md-5 col-sm-3">
+              <table class="table table-bordered table-condensed">
+		<thead>
+		  <tr class="active d-flex">
+		    <th>Compounds</th>
+		    <th class="col-md-4">Entries</th>
+		  </tr>
+		</thead>
+                <tbody>
+		  {% for data in stats_data.compounds_with %}
+                  <tr>
+                    <td><h4> {{ data.compounds }} </h4></td>
+                    <td align="right"><h4> {{ data.counts }} </h4></td>
+                  </tr>
+		  {% endfor %}
+                </tbody>
+              </table>
+         </div>
+     </div> <!-- row-->
+
+     <hr>
+
+  {% for data in data_list %}
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <h4><span class="label label-primary">
+		  {{ data.title }}:
+              </span></h4>
+         </div>
+     </div>
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <div class="center">
+		<img src="/stats/{{ data.phys }}.png" width="100%" alt="{{ data.title }}">
+              </div>
+         </div>
+     </div><!--/row-->
+     <hr>
+  {% endfor %}
+
+</div>
+
+{% endblock %}

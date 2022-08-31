@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+     <div class="clearfix" style="margin-bottom: 40px;"></div>
+     <div class="row">
+         <div class="col-md-3 col-sm-3">
+		<h4><span class="label label-primary">
+                    Material: 
+		</span></h4>
+		<h2 class="chemform">{{ cluster_data.formula.full | safe }}</h2>
+         </div>
+         <div class="col-md-3 col-sm-3">
+		<h4><span class="label label-primary">
+		    ID:
+		</span></h4>
+		<h2>{{ cluster_data.mm_id }}</h2>
+         </div>
+	 <!--
+         <div class="col-md-6 col-sm-3">
+		<h4><span class="label label-primary">
+		    Explore database:
+		</span></h4>
+         </div>
+	 -->
+     </div>
+
+     <hr>
+
+     <span>
+       <b>Navigation</b>:<br>
+       <a href="#Structure-data">Structure data</a> |
+       <a href="#Magnetic-properties">Magnetic properties</a> |
+       <a href="#Stability">Stability</a> |
+       <a href="#Atomic-positions">Atomic positions and site-specific magnetic data</a> |
+       <a href="#Notes">Notes and references</a>
+     </span>
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Structure-data">
+		  Structure data:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Composition </h4>
+                        </td>
+                        <td class="col-md-5">
+                          <h4> {{ cluster_data.formula.reduced | safe }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Full formula </h4>
+                        </td>
+                        <td>
+                          <h4> {{ cluster_data.formula.full | safe }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> The total number of atoms per cluster </h4>
+                        </td>
+                        <td>
+                          <h4> {{ cluster_data.num_sites }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Cluster diameter (&#8491;) </h4>
+                        </td>
+                        <td>
+                          <h4> {{ cluster_data.diameter }} </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Magnetic-properties">
+		  Magnetic properties:
+              </span></h4>
+              <table class="table table-bordered table-condensed">
+		 <thead>
+		   <tr class="active d-flex">
+		     <th></th>
+		     <th>First-principles calculations (<a href="#Notes">details</a>)</th>
+		   </tr>
+		 </thead>
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Total magnetic moment </h4>
+                        </td>
+                        <td class="col-md-5">
+                          <h4> {{ cluster_data.magmom.tot }} &mu;<sub>B</sub>/cluster </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Averaged magnetic moment </h4>
+                        </td>
+                        <td>
+                          <h4> {{ cluster_data.magmom.ave }} &mu;<sub>B</sub>/atom </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Thermodynamic-properties">
+		  Stability:
+	      </span>
+	      </h4>
+              <table class="table table-bordered table-condensed">
+		 <thead>
+		   <tr class="active d-flex">
+		     <th></th>
+		     <th>First-principles calculations (<a href="#Notes">details</a>)</th>
+		   </tr>
+		 </thead>
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Binding energy </h4>
+                        </td>
+                        <td class="col-md-5">
+                          <h4>  </h4><!-- eV/atom -->
+                        </td>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Atomic-positions">
+		  Atomic positions (Cartesian coordinates and radial one) and site-specific magnetic data:
+              </span>
+              </h4>
+	      <div class="table-wrapper-scroll-y">
+		<table class="table table-bordered table-striped">
+		  <thead>
+		    <tr class="active d-flex">
+                      <th class="col-md-1">index</th>
+                      <th class="col-md-1">species</th>
+                      <th class="col-md-2">x</th>
+                      <th class="col-md-2">y</th>
+                      <th class="col-md-2">z</th>
+                      <th class="col-md-1">r&nbsp;(&#8491;)</th>
+                      <th class="col-md-2">m&nbsp;(&mu;<sub>B</sub>)</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    {% for data in cluster_data.onsite %}
+                    <tr>
+                      <td>{{ data.index }}</td>
+                      <td>{{ data.specie }}</td>
+                      <td>{{ data.x }}</td>
+                      <td>{{ data.y }}</td>
+                      <td>{{ data.z }}</td>
+                      <td>{{ data.r }}</td>
+                      <td>{{ data.m }}</td>
+                    </tr>
+		    {% endfor %}
+		  </tbody>
+		</table>
+	      </div>
+	      <span>
+		<B>m</B>: local magnetic moment<br>
+	      </span>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-6 col-sm-3">
+           <h4><span class="label label-primary">
+	       Site-resolved magnetic moment:
+	   </span>
+	   </h4>
+	   <img src="/cluster/{{ cluster_data.mm_id }}/lmm.png" width="100%" alt="Local magnetic moments">
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+     <div class="row"> 
+         <div class="col-md-12 col-sm-6">
+              <h4><span class="label label-primary" id="Notes">
+		  Notes and references:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Methods </h4>
+                        </td>
+                        <td>
+                          <h4> Theory: DFT, GGA-PBE, real-space pseudopotentials </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> References </h4>
+                        </td>
+                        <td>
+                          <h4>
+			    {%if cluster_data.references %}
+			    {{ cluster_data.references.paper }}. DOI: <a href="{{ cluster_data.references.url }}">{{ cluster_data.references.doi }}</a>
+			    {%endif %}
+			  </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+</div><!-- container -->
+
+{%if tmp %}
+<hr>
+<B>tmp</B>: {{ tmp }}
+{% endif %}
+
+{% endblock %}

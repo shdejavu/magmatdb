@@ -1,0 +1,696 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+     <div class="clearfix" style="margin-bottom: 40px;"></div>
+     <div class="row">
+         <div class="col-md-3 col-sm-3">
+		<h4><span class="label label-primary">
+                    Material: 
+		</span></h4>
+		<h2 class="chemform">{{ mat_detail.formula.html | safe }}</h2>
+         </div>
+         <div class="col-md-3 col-sm-3">
+		<h4><span class="label label-primary">
+		    ID:
+		</span></h4>
+		<h2>{{ mat_detail.mm_id }}</h2>
+         </div>
+         <div class="col-md-6 col-sm-3">
+		<h4><span class="label label-primary">
+		    Explore database:
+		</span></h4>
+		{% for data in mat_detail.similar_structures %}
+		<h5>Compounds with the same {{ data.type }}: <a href="/query?select_type={{ data.select_type }}&in_string={{ data.formula.link }}">{{ data.formula.html | safe }}</a> ({{ data.counts }} found)</h5>
+		{% endfor %}
+         </div>
+     </div>
+
+     <hr>
+
+     <span>
+       <b>Navigation</b>:<br>
+       <a href="#Space-group">Space group</a> |
+       <a href="#Lattice-parameters">Lattice parameters</a> |
+       <a href="#Thermodynamic-properties">Thermodynamic properties</a> |
+       <a href="#Phase-diagram">Phase diagram</a> |
+       <a href="#Magnetic-properties">Magnetic properties</a> |
+       <a href="#Atomic-positions">Atomic positions and site-specific magnetic data</a> |
+       <a href="#Pair-wise">Pair-wise magnetic data</a> |
+       <a href="#Methods">Methods</a> |
+       <a href="#References">References</a>
+     </span>
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-5 col-sm-3">
+              <h4><span class="label label-primary" id="Space-group">
+		  Space group:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Crystal system </h4>
+                        </td>
+                        <td class="col-md-4">
+                          <h4> {{spg.crystal_system}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Space group number </h4>
+                        </td>
+                        <td>
+                          <h4><span class="value"><a href="/query?select_type=groupid&in_string={{ spg.number }}">{{ spg.number }}</a></span></h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Hermann-Mauguin </h4>
+                        </td>
+                        <td>
+                          <h4><span class="value"> {{spg.symbol}}</span></h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Hall </h4>
+                        </td>
+                        <td>
+                          <h4> {{spg.hall}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Point group </h4>
+                        </td>
+                        <td>
+                          <h4> {{spg.point_group}} </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div>
+         <div class="col-md-7 col-sm-3">
+              <h4><span class="label label-primary">
+		  Structure data:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Normalized formula </h4>
+                        </td>
+                        <td class="col-md-3">
+                          <h4> {{ mat_detail.formula.html | safe }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> The number of formula units per unit cell </h4>
+                        </td>
+                        <td>
+                          <h4> {{ mat_detail.formula.unit }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> The total number of atoms per unit cell </h4>
+                        </td>
+                        <td>
+                          <h4> {{ mat_detail.num_sites.total }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> The number of inequivalent sites per unit cell </h4>
+                        </td>
+                        <td>
+                          <h4> {{ mat_detail.num_sites.inequiv }} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Structure search </h4>
+                        </td>
+                        <td>
+			  {%if mat_detail.search.url %}
+			  <h4><a href="{{ mat_detail.search.url }}">{{ mat_detail.search.val }}</a></h4>
+			  {% else %}
+                          <h4> {{ mat_detail.search.val }} </h4>
+			  {% endif %}
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-4 col-sm-3">
+              <h4><span class="label label-primary" id="Lattice-parameters">
+		  Lattice parameters:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> a (&#8491;) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.a}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> b (&#8491;) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.b}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> c (&#8491;) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.c}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> &alpha; (deg.) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.alpha}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> &beta; (deg.) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.beta}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> &gamma; (deg.) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.gamma}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Volume (&#8491;<sup>3</sup>) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.volume}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Density (g/cm<sup>3</sup>) </h4>
+                        </td>
+                        <td align="right">
+                          <h4> {{lat.density}} </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+         <div class="col-md-6 col-sm-3">
+              <h4><span class="label label-primary">
+		  Crystal structure visualization:
+              </span>
+              </h4>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Thermodynamic-properties">
+		  Thermodynamic properties:
+	      </span>
+	      </h4>
+              <table class="table table-bordered table-condensed">
+		 <thead>
+		   <tr class="active d-flex">
+		     <th></th>
+		     <th>DFT calculations (<a href="#Methods">details</a>)</th>
+		   </tr>
+		 </thead>
+                 <tbody>
+		     {% for data in mat_detail.formation_energy %}
+                     <tr>
+                        <td>
+                          <h4> {{ data.description }} </h4>
+                        </td>
+                        <td class="col-md-5">
+                          <h4> {{ data.value }} </h4>
+                        </td>
+                     </tr>
+		     {% endfor %}
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <div class="row">
+         <div class="col-md-6 col-sm-3" id="Phase-diagram">
+           <h4><span class="label label-primary">
+	       Phase diagram:
+	   </span>
+	   </h4>
+	   {% if mat_detail.pd.plot %}
+ 	      <img src="/info/{{ mat_detail.mm_id }}/pd.png" width="100%" alt="Phase diagram">
+	   {% endif %}
+	   {% if mat_detail.pd.text %}
+	      <br>
+	      <span><i>{{ mat_detail.pd.text }}</i></span>
+	   {% endif %}
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary">
+		  Related structures:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+		     {% for data in mat_detail.similar_structures %}
+                     <tr>
+                        <td>
+			  <h4>Compounds with the same {{ data.type }}: {{ data.formula.html | safe }}</a></h4>
+                        </td>
+                        <td>
+			  <h4><a href="/query?select_type={{ data.select_type }}&in_string={{ data.formula.link }}">{{ data.counts }}</a> found</h4>
+                        </td>
+                     </tr>
+		     {% endfor %}
+		     {% for data in mat_detail.related_systems %}
+                     <tr>
+                        <td>
+			  <h4>{{ data.system }} compounds in {{ data.formula.html | safe }} system</a></h4>
+                        </td>
+                        <td>
+			  <h4><a href="/query?select_type={{ data.select_type }}&in_string={{ data.formula.link }}">{{ data.counts }}</a> found</h4>
+                        </td>
+                     </tr>
+		     {% endfor %}
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Magnetic-properties">
+		  Magnetic properties:
+              </span></h4>
+              <table class="table table-bordered table-condensed">
+		 <thead>
+		   <tr class="active d-flex">
+		     <th></th>
+		     <th class="col-md-5">DFT calculations (<a href="#Methods">details</a>)</th>
+		   </tr>
+		 </thead>
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Magnetic ordering </h4>
+                        </td>
+                        <td>
+                          <h4> {{mat_detail.mag_ordering}} </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Total magnetic moment </h4>
+                        </td>
+                        <td>
+                          <h4> {{ mat_detail.magmom.tot }} &mu;<sub>B</sub>/cell </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Averaged magnetic moment </h4>
+                        </td>
+                        <td>
+                          <h4> {{ mat_detail.magmom.ave }} &mu;<sub>B</sub>/atom </h4>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> Magnetic polarization, J<sub>s</sub> = &mu;<sub>0</sub>M<sub>s</sub> </h4>
+                        </td>
+                        <td>
+                          <h4> {{ mat_detail.magpol.SI }} T (= {{ mat_detail.magpol.cgs }} emu/cm<sup>3</sup>)</h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+
+	      {%if mat_detail.curie_T %}
+              <table class="table table-bordered table-condensed">
+		 <thead>
+		   <tr class="active d-flex">
+		     <th></th>
+		     <th class="col-md-5">LMTO-GF calculations (<a href="#Methods">details</a>)</th>
+		   </tr>
+		 </thead>
+                 <tbody>
+                     <tr>
+                        <td>
+                          <h4> Curie temperature, T<sub>C</sub> </h4>
+                        </td>
+                        <td>
+                          <h4> {{mat_detail.curie_T}} </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+	      {%else %}
+	      <span>
+		<i>Data for the Curie temperature are not available for this entry.</i>
+	      </span><br>
+	      {%endif %}
+
+	      {%if mat_detail.magnetic_anisotropy %}
+              <table class="table table-bordered table-condensed">
+		 <thead>
+		   <tr class="active d-flex">
+		     <th></th>
+		     <th class="col-md-5">DFT calculations (<a href="#Methods">details</a>)</th>
+		   </tr>
+		 </thead>
+                 <tbody>
+		   {% for d in mat_detail.magnetic_anisotropy.dft %}
+                   <tr>
+                     <td>
+                       <h4> Magnetic anisotropy constant, K<sup>{{ d.xy }}</sup> </h4>
+                     </td>
+                     <td>
+                       <h4> {{ d.constant }} MJ/m<sup>3</sup> (= {{ d.energy }} meV/cell) </h4>
+                     </td>
+                   </tr>
+		   {% endfor %}
+                   <tr>
+                     <td>
+                       <h4> Magnetic easy axis </h4>
+                     </td>
+                     <td>
+                       <h4> <a href="/query?select_type=easy_axis&in_string={{ mat_detail.magnetic_anisotropy.easy_axis }}">{{ mat_detail.magnetic_anisotropy.easy_axis }}</a> </h4>
+                     </td>
+                   </tr>
+                   <tr>
+                     <td>
+                       <h4> Magnetic hardness parameter, &kappa; </h4>
+                     </td>
+                     <td>
+                       <h4> {{ mat_detail.magnetic_anisotropy.kappa }} </h4>
+                     </td>
+                   </tr>
+                 </tbody>
+              </table>
+	      {%else %}
+	      <span>
+		<i>Data for the magnetic anisotropy are not available for this entry.</i>
+	      </span><br>
+	      {%endif %}
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-9 col-sm-3">
+              <h4><span class="label label-primary" id="Atomic-positions">
+		  Atomic positions (fractional coordinates) and site-specific magnetic data:
+              </span>
+              </h4>
+         </div> <!-- span6-->
+     </div><!--/row-->
+     <div class="row"> 
+         <div class="col-md-9 col-sm-3">
+	      <div class="table-wrapper-scroll-y">
+		<table class="table table-bordered table-striped">
+		  <thead>
+		    <tr class="active d-flex">
+                      <th class="col-md-1">index</th>
+                      <th class="col-md-1">species</th>
+                      <th class="col-md-1">w</th>
+                      <th class="col-md-2">x</th>
+                      <th class="col-md-2">y</th>
+                      <th class="col-md-2">z</th>
+                      <th class="col-md-1">m&nbsp;(&mu;<sub>B</sub>)</th>
+                      <th class="col-md-1">E<sup>soc</sup><sub>100</sub>&nbsp;(meV)</th>
+                      <th class="col-md-1">E<sup>soc</sup><sub>001</sub>&nbsp;(meV)</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    {% for data in mat_detail.onsite %}
+                    <tr>
+                      <td>{{ data.index }}</td>
+                      <td>{{ data.specie }}</td>
+                      <td>{{ data.wp }}</td>
+                      <td>{{ data.x }}</td>
+                      <td>{{ data.y }}</td>
+                      <td>{{ data.z }}</td>
+                      <td>{{ data.lmm }}</td>
+                      <td>{{ data.soc_100 }}</td>
+                      <td>{{ data.soc_001 }}</td>
+                    </tr>
+		    {% endfor %}
+		  </tbody>
+		</table>
+	      </div>
+	      <span>
+		<B>w</B>: site multiplicity (the number of equivalent positions) and Wyckoff letter (a label for site symmetry)<br>
+		<B>m</B>: local magnetic moment<br>
+		<B>E<sup>soc</sup><sub>100 (001)</sub></B>: Spin-orbit coupling energy for the magnetization oriented along the crystallographic a (c) axis<br>
+		(<i>Individual E<sup>soc</sup> values are temporarily not available while we perform maintenance.</i>)
+	      </span>
+         </div> <!-- span6-->
+         <div class="col-md-3 col-sm-3">
+	      <div class="dropdown">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		  Export data
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		  <ul>
+		    <li><a class="dropdown-item" href="/download/{{mat_detail.mm_id}}/vasp">vasp (poscar)</a></li>
+		    <li><a class="dropdown-item" href="/download/{{mat_detail.mm_id}}/cif">cif</a></li>
+		    <li><a class="dropdown-item" href="/download/{{mat_detail.mm_id}}/lammps">lammps</a></li>
+		    <li><a class="dropdown-item" href="/download/{{mat_detail.mm_id}}/json">json</a></li>
+		    <li><a class="dropdown-item" href="/download/{{mat_detail.mm_id}}/yaml">yaml</a></li>
+		  </ul>
+		</div>
+	      </div>
+	      <span>
+		<a href="#acknowledgements">Terms and conditions</a>
+	      </span>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-6 col-sm-3">
+           <h4><span class="label label-primary">
+	       Site-resolved magnetic moments:
+	   </span>
+	   </h4>
+	   <img src="/info/{{ mat_detail.mm_id }}/lmm.png" width="100%" alt="Local magnetic moments">
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row">
+         <div class="col-md-5 col-sm-3">
+              <h4><span class="label label-primary" id="Pair-wise">
+		  Pair-wise magnetic data:
+              </span>
+              </h4>
+         </div>
+     </div><!--/row-->
+     <div class="row">
+         <div class="col-md-6 col-sm-3">
+	      <div class="table-wrapper-scroll-y">
+		<table class="table table-bordered table-striped">
+		  <thead>
+		    <tr class="active d-flex">
+                      <th class="col-md-3" colspan="3">site <i>i</i></th>
+                      <th class="col-md-3" colspan="3">site <i>j</i></th>
+                      <th class="col-md-1">distance&nbsp;(&#8491;)</th>
+                      <th class="col-md-2">J<sub><i>ij</i></sub>&nbsp;(meV)</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    {% for data in mat_detail.pairwise %}
+                    <tr>
+                      <td>{{ data.index_i }}</td>
+                      <td>{{ data.element_i }}</td>
+                      <td>{{ data.wp_i }}</td>
+                      <td>{{ data.index_j }}</td>
+                      <td>{{ data.element_j }}</td>
+                      <td>{{ data.wp_j }}</td>
+                      <td>{{ data.R_ij }}</td>
+                      <td>{{ data.J_ij }}</td>
+                    </tr>
+		    {% endfor %}
+		  </tbody>
+		</table>
+	      </div>
+	      <span>
+		<B>J<sub><i>ij</i></sub></B>: magnetic exchange parameter between site <i>i</i> and <i>j</i> (Individual J<sub><i>ij</i></sub> values are temporarily not available while we perform maintenance.)
+	      </span>
+         </div> <!-- span6-->
+         <div class="col-md-3 col-sm-3">
+	      <div class="dropdown">
+		  Export data (under construction)
+		  <ul>
+		    <li>csv</li>
+		    <li>json</li>
+		    <li>yaml</li>
+		  </ul>
+	      </div>
+	      <span>
+		<a href="#acknowledgements">Terms and conditions</a>
+	      </span>
+         </div>
+     </div><!--/row-->
+
+     <hr>
+
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+           <h4><span class="label label-primary">
+	       Pair-resolved magnetic exchange parameters:
+	   </span>
+	   </h4>
+	   {%if mat_detail.J_ij.plot %}
+	     <img src="/info/{{ mat_detail.mm_id }}/jmap.png" width="100%" alt="Exchange coupling parameters">
+	   {%else %}
+	     <br>
+	     <span><i>Diagram is not available for this entry.</i></span>
+	   {%endif %}
+         </div>
+         <div class="col-md-6 col-sm-3">
+           <h4><span class="label label-primary">
+	       Individual exchange parameters:
+	   </span>
+	   </h4>
+	   {%if mat_detail.J_ij.plot %}
+	     <img src="/info/{{ mat_detail.mm_id }}/J_ij.png" width="100%" alt="Exchange coupling parameters">
+	   {%else %}
+	     <br>
+	     <span><i>Diagram is not available for this entry.</i></span>
+	   {%endif %}
+         </div>
+     </div><!--/row-->
+
+     <hr>
+     
+     <div class="row"> 
+         <div class="col-md-12 col-sm-6">
+              <h4><span class="label label-primary" id="Methods">
+		  Methods:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td class="col-md-3">
+                          <h4> DFT calculations </h4>
+                        </td>
+                        <td>
+			  <p>
+			    <ul>
+			      {%for d in mat_detail.method.DFT %}
+			      <li>{{ d.key }}: {{ d.value }}</li>
+			      {%endfor %}
+			    </ul>
+			  </>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                          <h4> LMTO-GF calculations </h4>
+                        </td>
+                        <td>
+			  {%if mat_detail.method.LMTO %}
+			  <p>
+			    <ul>
+			      {%for d in mat_detail.method.LMTO %}
+			      <li>{{ d.key }}: {{ d.value }}</li>
+			      {%endfor %}
+			    </ul>
+			  </p>
+			  {%endif %}
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+
+     <div class="row"> 
+         <div class="col-md-12 col-sm-6">
+              <h4><span class="label label-primary" id="Methods">
+		  References:
+              </span>
+              </h4>
+              <table class="table table-bordered table-condensed">
+                 <tbody>
+                     <tr>
+                        <td class="col-md-3">
+                          <h4> References </h4>
+                        </td>
+                        <td>
+                          <h4>
+			    {% for item in mat_detail.references %}
+			    <p> {{ item.txt }} <a href="{{ item.url }}">{{ item.lnk }}</a></p>
+			    {% endfor %}
+			  </h4>
+                        </td>
+                     </tr>
+                 </tbody>
+              </table>
+         </div> <!-- span6-->
+     </div><!--/row-->
+
+</div><!-- container -->
+
+<!--
+{%if tmp %}
+<hr>
+<B>debug</B>:<br>
+{{ tmp | safe }}
+{% endif %}
+
+{%if dash_data %}
+<hr>
+<B>debug</B>:<br>
+{{ dash_data | safe }}
+{%endif %}
+-->
+
+{% endblock %}

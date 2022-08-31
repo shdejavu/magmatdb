@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3>About our Database for Novel Magnetic Materials</h3>
+</div>
+
+
+<div class="col-xs-12 col-sm-9">
+  <div class="jumbotron">
+    <h4>Principal Investigators:</h4>
+    <span>
+      <B>James R. Chelikowsky</B> (<a href="https://www.utexas.edu/">University of Texas at Austin</a>) <br>
+      <B>Kai-Ming Ho</B> and <B>Cai-Zhuang Wang</B> (<a href="https://www.iastate.edu/">Iowa State University</a>) <br>
+      <B>David Sellmyer</B> and <B>XiaoShan Xu</B> (<a href="https://www.unl.edu/">University of Nebraska–Lincoln</a>)
+    </span><br>
+    <br>
+    <h4>In collaboration with:</h4>
+    <span>
+      <a href="https://www.oden.utexas.edu/people/1396/">Masahiro Sakurai</a> and Timothy Liao (UT Austin) <br>
+      <a href="https://github.com/haidi-ustc">Haidi Wang</a>, Xin Zhao, Yang Sun, Chao Zhang, Huaijun Sun, and Renhai Wang (ISU) <br>
+      Songyou Wang (Fudan University)
+    </span><br>
+    <br>
+    <h4>Fundings:</h4>
+    <span> Our project is supported by the <a href="https://www.nsf.gov/">National Science Foundation</a> (NSF) through the <a href="https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=505073">Designing Materials to Revolutionize and Engineer our Future</a> (DMREF) program (Award Numbers: <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1729202">1729202</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1729288">1729288</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1729677">1729677</a>).</span><br>
+    <br>
+    <h4>Computational Resources:</h4>
+    <span> HPC resources were provided by the <a href="https://www.tacc.utexas.edu/">Texas Advanced Computing Center</a> (TACC), through the <a href="https://www.xsede.org/">Extreme Science and Engineering Discovery Environment</a> (XSEDE), and the <a href="https://www.nersc.gov/">National Energy Research Scientific Computing Center</a> (NERSC). </span><br>
+  </div>
+</div><!--/.col-xs-12.col-sm-9-->
+
+
+<div class="col-xs-12 col-sm-9">
+  <div class="jumbotron">
+    <h4>Methodologies:</h4>
+    <h5 id="AGA">Crystal structure search:</h5>
+    <span> Adaptive genetic algorithm (AGA)</span>
+    <br>
+    <h5 id="DFT">First-principles calculations:</h5>
+    <span>
+      Density-functional theory (DFT) combined with pseudopotentials (PARSEC, QE, and VASP) <br>
+      Linear muffin-tin orbital (LMTO) and KKR Green's function methods (Questaal)
+    </span>
+    <br>
+    <h5 id="REF">References:</h5>
+    <span>
+      [1] B. Balasubramanian <i>et al.</i> <a href="https://doi.org/10.1039/D0ME00050G">Mol. Syst. Des. Eng. <b>5</b>, 1098-1117 (2020)</a>. [Review Article]<br>
+      [2] M. Sakurai <i>et al.</i> <a href="https://doi.org/10.1103/PhysRevMaterials.4.114408">Phys. Rev. Materials <b>4</b>, 114408 (2020)</a>. [selected as <a href="https://journals.aps.org/prmaterials/issues/4/11">Editors' Suggestion</a>]
+    </span>
+  </div>
+</div><!--/.col-xs-12.col-sm-9-->
+
+
+<div class="col-xs-12 col-sm-9">
+  <div class="jumbotron">
+    <h4 id="papers">Original papers for specific rare-earth-free magnets on our database:</h4>
+
+    <h5><a href="/query?select_type=element&in_string=Fe+N">Fe-N</a>, <a href="/query?select_type=element&in_string=Co+N">Co-N</a>, <a href="/query?select_type=element&in_string=Fe+Co+N">Fe-Co-N</a></h5>
+    <!--
+      We study cobalt nitride system in detail using the adaptive genetic algorithm (GA) and first-principles calculations [1].
+      Iron is more preferable than cobalt in permanent magnet applications considering its low price plus that Fe has a larger magnetic moment than Co.
+      By extending our work on a binary <a href="/query?select_type=element&in_string=Co+N">Co-N</a> system to a ternary system, <a href="/query?select_type=element&in_string=Fe+Co+N">Fe-Co-N</a> compounds have been investigated as rare-earth free magnets [2].
+      We find that substituting a fraction of Co with Fe helps to stabilize the newly proposed structures and at the same time further improve the magnetic properties.
+    -->
+    <ol>
+      <li> X. Zhao <i>et al.</i>, <a href="http://dx.doi.org/10.1039/C6CP06024B">Phys. Chem. Chem. Phys. <b>18</b>, 31680 (2016)</a>.</li>
+      <li> X. Zhao <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevB.94.224424">Phys. Rev. B <b>94</b>, 224424 (2016)</a>.</li>
+      <li> M. Sakurai <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevMaterials.2.024401">Phys. Rev. Materials <b>2</b>, 024401 (2018)</a>.</li>
+    </ol>
+
+    <h5><a href="/query?select_type=element&in_string=Fe+C">Fe-C</a>, <a href="/query?select_type=element&in_string=Co+C">Co-C</a>, <a href="/query?select_type=element&in_string=Fe+Co+C">Fe-Co-C</a></h5>
+    <ol>
+      <li> S. Q. Wu <i>et al.</i>, <a href="https://doi.org/10.1088/1361-6463/aa6b85">J. Phys. D: Appl. Phys. <b>50</b>, 215005 (2017)</a>.</li>
+    </ol>
+
+    <h5><a href="/query?select_type=element&in_string=Fe+Ni+B">Fe-Ni-B</a></h5>
+    <ol>
+      <li> M. Sakurai <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevMaterials.4.084402">Phys. Rev. Materials <b>4</b>, 084402 (2020)</a>.</li>
+    </ol>
+
+    <h5><a href="/query?select_type=element&in_string=Fe+Si">Fe-Si</a>, <a href="/query?select_type=element&in_string=Co+Si">Co-Si</a></h5>
+    <ol>
+      <li> B. Balasubramanian <i>et al.</i>, <a href="https://doi.org/10.1063/1.4945987">Appl. Phys. Lett. <b>108</b>, 152406 (2016)</a>.</li>
+      <li> X. Zhao <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevB.96.024422">Phys. Rev. B <b>96</b>, 024422 (2017)</a>.</li>
+      <li> Z. Yang <i>et al.</i>, <a href="https://doi.org/10.1063/1.5036992">J. Appl. Phys. <b>124</b>, 073901 (2018)</a>.</li>
+    </ol>
+
+    <h5><a href="/query?select_type=element&in_string=Fe+S">Fe-S</a>, <a href="/query?select_type=element&in_string=Fe+Co+S">Fe-Co-S</a></h5>
+    <ol>
+      <li> S. Yu <i>et al.</i>, <a href="https://doi.org/10.1088/1361-6463/aaa58b">J. Phys. D: Appl. Phys. <b>51</b>, 075001 (2018)</a>.</li>
+    </ol>
+
+    <h5><a href="/query?select_type=element&in_string=Y+Co">Y-Co</a>, <a href="/query?select_type=element&in_string=Zr+Co">Zr-Co</a>, <a href="/query?select_type=element&in_string=Zr+Co+B">Zr-Co-B</a></h5>
+    <ol>
+      <li> X. Zhao <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevLett.112.045502">Phys. Rev. Lett. <b>112</b>, 045502 (2014)</a>.</li>
+      <li> B. Balasubramanian <i>et al.</i> <a href="https://doi.org/10.1088/0953-8984/26/6/064204">J. Phys.: Condens. Matter <b>26</b>, 064204 (2014)</a>.</li>
+      <li> X. Zhao <i>et al.</i>, <a href="https://doi.org/10.1063/1.4922984">J. Appl. Phys. <b>117</b>, 243902 (2015)</a>.</li>
+      <li> M. Sakurai <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevMaterials.2.084410">Phys. Rev. Materials <b>2</b>, 084410 (2018)</a>.</li>
+    </ol>
+
+    <h5><a href="/query?select_type=element&in_string=Fe+Co+Ti">Fe-Co-Ti</a>, <a href="/query?select_type=element&in_string=Fe+Co+Nb">Fe-Co-Nb</a>, <a href="/query?select_type=element&in_string=Fe+Co+Mn">Fe-Co-Mn</a></h5>
+    <ol>
+      <li> J. Zhang <i>et al.</i>, <a href="https://doi.org/10.1088/0022-3727/49/17/175002">J. Phys. D: Appl. Phys. <b>49</b>, 175002 (2016)</a>.</li>
+      <li> B. Balasubramanian <i>et al.</i> <a href="https://doi.org/10.1063/1.4968517">APL Materials <b>4</b>, 116109 (2016)</a>.</li>
+      <li> X. Xu <i>et al.</i>, <a href="https://doi.org/10.1088/1361-6463/50/2/025002">J. Phys. D. Appl. Phys. <b>50</b>, 025002 (2017)</a>.</li>
+      <li> M. Sakurai <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevMaterials.3.044402">Phys. Rev. Materials <b>3</b>, 044402 (2019)</a>.</li>
+      <li> H. Wang <i>et al.</i>, <a href="https://doi.org/10.1103/PhysRevMaterials.3.064403">Phys. Rev. Materials <b>3</b>, 064403 (2019)</a>.</li>
+    </ol>
+
+  </div>
+</div>
+
+{% endblock %}

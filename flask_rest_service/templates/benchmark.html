@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3>Benchmark: theoretical values vs. experimental values</h3>
+</div>
+
+
+<div class="container">
+  {% for data in data_list %}
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <h4><span class="label label-primary">
+		  {{ data.title }}:
+              </span></h4>
+         </div>
+     </div>
+     <div class="row"> 
+         <div class="col-md-6 col-sm-3">
+              <div class="center">
+		<img src="/benchmark/{{ data.phys }}.png" width="100%" alt="{{ data.title }}">
+              </div>
+         </div>
+         <div class="col-md-6 col-sm-3">
+              <table class="table table-bordered table-condensed">
+		<thead>
+		  <tr class="active d-flex">
+		    <th>Material</th>
+		    <th>ID</th>
+		    <th>Experiment&nbsp;({{ data.unit | safe }})</th>
+		    <th>Theory&nbsp;({{ data.unit | safe }})</th>
+		  </tr>
+		</thead>
+                <tbody>
+		  {% for d in data.table %}
+                  <tr>
+                    <td><h4> {{ d.material | safe }} </h4></td>
+		    <td><h4><a href="/info/{{ d.mm_id }}">{{ d.mm_id }}</a></h4></td>
+                    <td align="center"><h4> {{ d.experiment }} </h4></td>
+                    <td align="center"><h4> {{ d.theory }} </h4></td>
+                  </tr>
+		  {% endfor %}
+                </tbody>
+              </table>
+         </div>
+     </div><!--/row-->
+     <hr>
+  {% endfor %}
+</div>
+
+{% endblock %}

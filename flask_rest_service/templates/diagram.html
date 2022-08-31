@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3>Phase diagrams:</h3>
+  <h5>
+    Binary phases: {%for data in pd_data.binary %} <a href="/diagram#{{ data.system }}">{{ data.system }}</a> ({{ data.counts }}), {%endfor %} among others.
+  </h5>
+  <h5>
+    Ternary phases: {%for data in pd_data.ternary %} <a href="/diagram#{{ data.system }}">{{ data.system }}</a> ({{ data.counts }}), {%endfor %} among others.
+  </h5>
+</div>
+
+{%for data in pd_data.binary %}
+<h3 id="{{ data.system }}">{{ data.system }}</h3>
+<img src="/info/{{ data.mm_id }}/pd.png" width="50%" />
+<br>
+<span>A compositional phase diagram of {{ data.system }} system (<a href="/query?select_type=element&in_string={{ data.link }}">browse data</a> for {{ data.counts }}).</span>
+
+<hr>
+{%endfor %}
+
+
+{%for data in pd_data.ternary %}
+<h3 id="{{ data.system }}">{{ data.system }}</h3>
+<img src="/static/images/{{ data.system }}-convex-hull.png" width="50%" />
+<br>
+<span>Convex-hull diagram of {{ data.system }} system (<a href="/query?select_type=element&in_string={{ data.link }}">browse data</a> for {{ data.counts }}).</span>
+
+<hr>
+{%endfor %}
+
+{% endblock %}
